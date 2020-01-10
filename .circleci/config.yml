@@ -2,13 +2,13 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/buildpack-deps:stretch
+      - image: ocrd/core
     steps:
       - checkout
-      - setup_remote_docker
-      - run: sudo apt-get install -y openjdk-11-jdk-headless wget git gcc unzip
+      - run: git submodule update --init
+      - run: sudo apt-get install -y openjdk-8-jdk-headless wget git gcc unzip
       - run: sudo make install-fileformat install PREFIX=/usr/local
-      - run: make docker
+      # - run: make docker
 
 workflows:
   version: 2
