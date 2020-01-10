@@ -1,0 +1,3 @@
+[submodule "ocr-fileformat"]
+	path = ocr-fileformat
+	url = https://github.com/UB-Mannheim/ocr-fileformat
