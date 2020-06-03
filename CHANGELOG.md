@@ -5,6 +5,8 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.0.1] - 2020-06-03
+
 Fixed:
 
   * Pass on `script-args` to ocr-transform, fix #4
