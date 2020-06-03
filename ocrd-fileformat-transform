@@ -84,7 +84,7 @@ main () {
 
         # Actual conversion
         info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($pageid)"
-        ocr-transform "${from_to[@]}" "$in_file" "$out_file"
+        ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- $script_args
 
         # Add the output files
         declare -a options
