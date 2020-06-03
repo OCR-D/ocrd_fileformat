@@ -6,10 +6,10 @@
       "executable": "ocrd-fileformat-transform",
       "description": "Convert between OCR file formats",
       "categories": [
-        "Can't be arsed ..."
+        "Image preprocessing"
       ],
       "steps": [
-        "... to look up now"
+        "preprocessing/optimization"
       ],
       "input_file_grp": [
         "OCR-D-OCR-PAGE",
