@@ -10,20 +10,13 @@ SCRIPT_NAME="${0##*/}"
 
 MIMETYPE_PAGE=$(ocrd bashlib constants MIMETYPE_PAGE)
 
-# FIXME: add a bashlib wrapper for logging to use here
-function log {
-    echo >&2 "$(date +%T.%3N) $LEVEL $SCRIPT_NAME - $*"
-}
-function critical { LEVEL=CRITICAL log "$*"; }
-function error { LEVEL=ERROR log "$*"; }
-function warning { LEVEL=WARNING log "$*"; }
-function info { LEVEL=INFO log "$*"; }
-function debug { LEVEL=DEBUG log "$*"; }
-
 main () {
     # Load ocrd bashlib functions
     # shellcheck source=../core/ocrd/bashlib/lib.bash
     source $(ocrd bashlib filename)
+
+    # Require at least 2.10.1
+    ocrd__minversion 2.10.1
 
     # Describe calling script to lib.bash
     ocrd__wrap "$SHAREDIR/ocrd-tool.json" "$SCRIPT_NAME" "$@"
@@ -62,7 +55,7 @@ main () {
         local pageid="${fields[2]:-}"
 
         if ! test -f "$in_file"; then
-           error "input file \"$in_file\" ID=${in_id} (pageId=${pageid}) is not on disk"
+           ocrd__log error "input file \"$in_file\" ID=${in_id} (pageId=${pageid}) is not on disk"
            continue
         fi
 
@@ -83,7 +76,7 @@ main () {
         esac
 
         # Actual conversion
-        info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($pageid)"
+        ocrd__log info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($pageid)"
         ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- $script_args
 
         # Add the output files
