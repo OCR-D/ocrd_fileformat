@@ -5,6 +5,13 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.0.3] - 2020-06-14
+
+Fixed:
+
+  * `$script_args` passed correctly now, #4
+  * Require ocrd >= 2.10.2
+
 ## [0.0.2] - 2020-06-13
 
 Fixed:
@@ -20,5 +27,6 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.0.3]: ../../compare/v0.0.3...v0.0.2
 [0.0.2]: ../../compare/v0.0.2...v0.0.1
 [0.0.1]: ../../compare/HEAD...v0.0.1
