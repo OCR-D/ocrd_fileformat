@@ -1,5 +1,6 @@
 #!/bin/bash
-set -eu
+set -e
+set -u
 set -o pipefail
 set -x
 
@@ -28,8 +29,8 @@ main () {
 
     # read params
     local from_to script_args output_extension
+    script_args=(${params['script-args']:-})
     from_to=(${params['from-to']})
-    script_args=(${params['script-args']})
     output_extension=${params['ext']}
 
     # Download the files and do the conversion
@@ -77,7 +78,7 @@ main () {
 
         # Actual conversion
         ocrd__log info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($pageid)"
-        ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- $script_args
+        ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- ${script_args[@]}
 
         # Add the output files
         declare -a options
