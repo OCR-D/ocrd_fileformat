@@ -16,8 +16,8 @@ main () {
     # shellcheck source=../core/ocrd/bashlib/lib.bash
     source $(ocrd bashlib filename)
 
-    # Require at least 2.10.1
-    ocrd__minversion 2.10.1
+    # Require at least 2.10.2
+    ocrd__minversion 2.10.2
 
     # Describe calling script to lib.bash
     ocrd__wrap "$SHAREDIR/ocrd-tool.json" "$SCRIPT_NAME" "$@"
