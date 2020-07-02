@@ -29,13 +29,13 @@ help:
 
 # Install python packages
 deps:
-	$(PIP) install ocrd # needed for ocrd CLI (and bashlib)
+	$(PIP) install -U ocrd # needed for ocrd CLI (and bashlib)
 
 install-fileformat:
 	make -C  ocr-fileformat PREFIX=$(PREFIX) vendor install
 
 # Install the executable in $(PREFIX)/bin and the ocrd-tool.json to $(SHAREDIR)
-install:
+install: install-fileformat deps
 	mkdir -p $(BINDIR)
 	for script in $(SCRIPTS);do \
 		sed 's,^SHAREDIR.*,SHAREDIR="$(SHAREDIR)",' $$script > $(BINDIR)/$$script ;\
@@ -60,3 +60,5 @@ uninstall:
 # Build Docker image
 docker:
 	docker build -t '$(DOCKER_TAG)' .
+
+.PHONY: help deps install-fileformat install uninstall docker
