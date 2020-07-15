@@ -16,8 +16,8 @@ main () {
     # shellcheck source=../core/ocrd/bashlib/lib.bash
     source $(ocrd bashlib filename)
 
-    # Require at least 2.10.2
-    ocrd__minversion 2.10.2
+    # Require at least 2.11.0
+    ocrd__minversion 2.11.0
 
     # Describe calling script to lib.bash
     ocrd__wrap "$SHAREDIR/ocrd-tool.json" "$SCRIPT_NAME" "$@"
@@ -57,7 +57,7 @@ main () {
         local pageid="${fields[2]:-}"
 
         if ! test -f "$in_file"; then
-           ocrd__log error "input file \"$in_file\" ID=${in_id} (pageId=${pageid}) is not on disk"
+           ocrd log error "input file \"$in_file\" ID=${in_id} (pageId=${pageid}) is not on disk"
            continue
         fi
 
@@ -78,7 +78,7 @@ main () {
         esac
 
         # Actual conversion
-        ocrd__log info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($pageid)"
+        ocrd log info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($pageid)"
         ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- ${script_args[@]}
 
         # Add the output files
