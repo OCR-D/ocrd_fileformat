@@ -5,6 +5,8 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.0.4] - 2020-07-15
+
 Fixed:
 
   * Support `--page-id` CLI option, #9
@@ -33,6 +35,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.0.4]: ../../compare/v0.0.4...v0.0.3
 [0.0.3]: ../../compare/v0.0.3...v0.0.2
 [0.0.2]: ../../compare/v0.0.2...v0.0.1
 [0.0.1]: ../../compare/HEAD...v0.0.1
