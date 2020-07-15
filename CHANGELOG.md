@@ -5,6 +5,12 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Fixed:
+
+  * Support `--page-id` CLI option, #9
+  * Require ocrd >= 2.11.0
+  * Logging with `ocrd log` not `ocrd__log`
+
 ## [0.0.3] - 2020-06-14
 
 Fixed:
