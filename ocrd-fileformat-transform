@@ -23,6 +23,7 @@ main () {
     ocrd__wrap "$SHAREDIR/ocrd-tool.json" "$SCRIPT_NAME" "$@"
 
     cd "${ocrd__argv[working_dir]}"
+    page_id=${ocrd__argv[page_id]:-}
     in_file_grp=${ocrd__argv[input_file_grp]}
     out_file_grp=${ocrd__argv[output_file_grp]}
     mkdir -p $out_file_grp
