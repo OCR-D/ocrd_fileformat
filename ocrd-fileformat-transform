@@ -79,7 +79,15 @@ main () {
 
         # Actual conversion
         ocrd__log info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($pageid)"
-        ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- ${script_args[@]}
+        result=$(ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- "${script_args[@]}")
+
+        # if result contains exception output, it's length exceeds 8
+        if [ ${#result} -gt 8 ]; then
+            echo "$(date +%Y-%m-%d,%H:%M:%S) [ERROR] no valid transformation of '$in_file', '$out_file' not created"
+            continue
+        else
+            echo "$(date +%Y-%m-%d,%H:%M:%S) [INFO ] transformation '$in_file' => '$out_file' processed without exception"
+        fi
 
         # Add the output files
         declare -a options
