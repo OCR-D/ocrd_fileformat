@@ -1,3 +1,6 @@
 [submodule "ocr-fileformat"]
 	path = ocr-fileformat
 	url = https://github.com/UB-Mannheim/ocr-fileformat
+[submodule "assets"]
+	path = repo/assets
+	url = https://github.com/OCR-D/assets
