@@ -9,6 +9,7 @@ PREFIX ?= $(if $(VIRTUAL_ENV),$(VIRTUAL_ENV),/usr/local)
 
 BINDIR = $(PREFIX)/bin
 SHAREDIR = $(PREFIX)/share/$(PROJECT_NAME)
+TESTDIR = tests
 
 # BEGIN-EVAL makefile-parser --make-help Makefile
 
@@ -16,10 +17,14 @@ help:
 	@echo ""
 	@echo "  Targets"
 	@echo ""
-	@echo "    deps       Install python packages"
-	@echo "    install    Install the executable in $(PREFIX)/bin and the ocrd-tool.json to $(SHAREDIR)"
-	@echo "    uninstall  Uninstall scripts and $(SHAREDIR)"
-	@echo "    docker     Build Docker image"
+	@echo "    deps               Install python packages"
+	@echo "    install            Install the executable in $(PREFIX)/bin and the ocrd-tool.json to $(SHAREDIR)"
+	@echo "    uninstall          Uninstall scripts and $(SHAREDIR)"
+	@echo "    docker             Build Docker image"
+	@echo "    $(TESTDIR)/assets  Setup test assets"
+	@echo "    assets-clean       Remove $(TESTDIR)/assets"
+	@echo "    deps-test          Install dev dependencies with pip"
+	@echo "    test               Run tests with pytest"
 	@echo ""
 	@echo "  Variables"
 	@echo ""
@@ -32,7 +37,7 @@ deps:
 	$(PIP) install -U ocrd # needed for ocrd CLI (and bashlib)
 
 install-fileformat:
-	make -C  ocr-fileformat PREFIX=$(PREFIX) vendor install
+	make -C repo/ocr-fileformat PREFIX=$(PREFIX) vendor install
 
 # Install the executable in $(PREFIX)/bin and the ocrd-tool.json to $(SHAREDIR)
 install: install-fileformat deps
@@ -55,10 +60,38 @@ uninstall:
 		rm --verbose --force "$(BINDIR)/$$script";\
 	done
 	rm -rfv $(SHAREDIR)
-	make -C ocr-fileformat PREFIX=$(PREFIX) uninstall
+	make -C repo/ocr-fileformat PREFIX=$(PREFIX) uninstall
 
 # Build Docker image
 docker:
 	docker build -t '$(DOCKER_TAG)' .
+
+#
+# Assets
+#
+
+repo/assets repo/ocr-fileformat:
+	git submodule update --init
+
+assets: repo/assets $(TESTDIR)/assets
+
+# Setup test assets
+$(TESTDIR)/assets:
+	mkdir -p $(TESTDIR)/assets
+	cp -r -t $(TESTDIR)/assets assets/data/*
+
+# Remove $(TESTDIR)/assets
+assets-clean:
+	rm -rf $(TESTDIR)/assets
+
+# Install dev dependencies with pip
+deps-test:
+	pip install -r requirements-test.txt
+
+# Run tests with pytest
+test: deps-test
+	pytest tests
+
+
 
 .PHONY: help deps install-fileformat install uninstall docker
