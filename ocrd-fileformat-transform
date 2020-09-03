@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 set -u
 set -o pipefail
-set -x
+# set -x
 
 which ocrd >/dev/null 2>/dev/null || { echo "ocrd not in \$PATH. Panicking"; exit 1; }
 
@@ -16,8 +16,8 @@ main () {
     # shellcheck source=../core/ocrd/bashlib/lib.bash
     source $(ocrd bashlib filename)
 
-    # Require at least 2.10.2
-    ocrd__minversion 2.10.2
+    # Require at least 2.15.0
+    ocrd__minversion 2.15.0
 
     # Describe calling script to lib.bash
     ocrd__wrap "$SHAREDIR/ocrd-tool.json" "$SCRIPT_NAME" "$@"
