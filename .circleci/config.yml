@@ -7,8 +7,7 @@ jobs:
       - checkout
       - run: git submodule update --init
       - run: sudo apt-get install -y openjdk-8-jdk-headless wget git gcc unzip
-      - run: sudo make install-fileformat install PREFIX=/usr/local
-      # - run: make docker
+      - run: sudo make test
 
 workflows:
   version: 2

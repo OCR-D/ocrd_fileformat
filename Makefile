@@ -73,12 +73,13 @@ docker:
 repo/assets repo/ocr-fileformat:
 	git submodule update --init
 
+.PHONY: assets $(TESTDIR)/assets
 assets: repo/assets $(TESTDIR)/assets
 
 # Setup test assets
 $(TESTDIR)/assets:
 	mkdir -p $(TESTDIR)/assets
-	cp -r -t $(TESTDIR)/assets assets/data/*
+	cp -r -t $(TESTDIR)/assets repo/assets/data/*
 
 # Remove $(TESTDIR)/assets
 assets-clean:
@@ -89,8 +90,8 @@ deps-test:
 	pip install -r requirements-test.txt
 
 # Run tests with pytest
-test: deps-test
-	pytest tests
+test: install deps-test assets
+	PATH="$(PREFIX)/bin:$$PATH" pytest tests
 
 
 
