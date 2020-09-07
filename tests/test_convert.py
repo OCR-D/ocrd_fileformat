@@ -19,6 +19,7 @@ def sample_workspace(resolver):
     yield workspace
     chdir(oldpwd)
 
+# TODO any assertions about the transformation
 def test_page_to_alto(resolver, sample_workspace):
     code, out, err = run_cli(
         'ocrd-fileformat-transform',
@@ -28,9 +29,6 @@ def test_page_to_alto(resolver, sample_workspace):
         mets_url='mets.xml',
         parameter=dumps({'from-to': 'page alto'})
     )
-    print("code=%s out=%s err=%s" % (code, out, err))
-    #  print(sample_workspace)
-    assert 0
 
 if __name__ == '__main__':
     main([__file__])
