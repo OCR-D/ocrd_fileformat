@@ -5,6 +5,20 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Fixed:
+
+  * errors in transformation will be logged but no files are added, #10, #13
+
+## [0.0.4] - 2020-07-15
+
+Fixed:
+
+  * Support --page-id CLI option, #9
+  * Require ocrd >= 2.11.0
+  * Logging with ocrd log not ocrd__log
+
+
+
 ## [0.0.3] - 2020-06-14
 
 Fixed:
@@ -27,6 +41,8 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.0.3]: ../../compare/v0.0.5...v0.0.4
+[0.0.4]: ../../compare/v0.0.4...v0.0.3
 [0.0.3]: ../../compare/v0.0.3...v0.0.2
 [0.0.2]: ../../compare/v0.0.2...v0.0.1
 [0.0.1]: ../../compare/HEAD...v0.0.1
