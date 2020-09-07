@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 set -u
 set -o pipefail
-set -x
+# set -x
 
 which ocrd >/dev/null 2>/dev/null || { echo "ocrd not in \$PATH. Panicking"; exit 1; }
 
@@ -16,8 +16,8 @@ main () {
     # shellcheck source=../core/ocrd/bashlib/lib.bash
     source $(ocrd bashlib filename)
 
-    # Require at least 2.10.2
-    ocrd__minversion 2.10.2
+    # Require at least 2.15.0
+    ocrd__minversion 2.15.0
 
     # Describe calling script to lib.bash
     ocrd__wrap "$SHAREDIR/ocrd-tool.json" "$SCRIPT_NAME" "$@"
@@ -57,7 +57,7 @@ main () {
         local pageid="${fields[2]:-}"
 
         if ! test -f "$in_file"; then
-           ocrd__log error "input file \"$in_file\" ID=${in_id} (pageId=${pageid}) is not on disk"
+           ocrd log -n "$SCRIPT_NAME" error "input file \"$in_file\" ID=${in_id} (pageId=${pageid}) is not on disk"
            continue
         fi
 
@@ -78,10 +78,18 @@ main () {
         esac
 
         # Actual conversion
-        ocrd__log info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($pageid)"
-        ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- ${script_args[@]}
+        ocrd log -n "$SCRIPT_NAME" info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($pageid)"
+        output=$(ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- ${script_args[@]} 2>&1)
+        retval="$?"
+
+        if (( retval > 0 ));then
+            ocrd log -n "$SCRIPT_NAME" error "exited with status $retval: ocr-transform ${from_to[*]} $in_file $out_file -- ${script_args[@]}"
+            ocrd log -n "$SCRIPT_NAME" info "STDOUT/STDERR: $output"
+            continue
+        fi
 
         # Add the output files
+        ocrd log -n "$SCRIPT_NAME" info "Successfully executed: ocr-transform ${from_to[*]} $in_file $out_file -- ${script_args[@]}"
         declare -a options
         if [ -n "$pageid" ]; then
             options=( -g $pageid )
