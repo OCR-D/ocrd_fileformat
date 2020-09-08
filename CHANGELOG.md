@@ -5,6 +5,12 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.0.6] - 2020-09-08
+
+Fixed:
+
+  * Upgrade ocr-fileformat
+
 ## [0.0.5] - 2020-09-07
 
 Fixed:
@@ -43,6 +49,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.0.6]: ../../compare/v0.0.6...v0.0.5
 [0.0.5]: ../../compare/v0.0.5...v0.0.4
 [0.0.4]: ../../compare/v0.0.4...v0.0.3
 [0.0.3]: ../../compare/v0.0.3...v0.0.2
