@@ -5,6 +5,12 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.0.7] - 2020-09-21
+
+Changed:
+
+  * ocr-fileformat -> 0.4.0 with enhancements to PAGEConverter, #18
+
 ## [0.0.6] - 2020-09-08
 
 Fixed:
@@ -49,6 +55,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.0.7]: ../../compare/v0.0.7...v0.0.6
 [0.0.6]: ../../compare/v0.0.6...v0.0.5
 [0.0.5]: ../../compare/v0.0.5...v0.0.4
 [0.0.4]: ../../compare/v0.0.4...v0.0.3
