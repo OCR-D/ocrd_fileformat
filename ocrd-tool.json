@@ -45,9 +45,9 @@
           ]
         },
         "ext": {
-          "description": "Output extension",
+          "description": "Output extension. Set to empty string to derive extension from mimetype.",
           "type": "string",
-          "default": ".xml"
+          "default": ""
         },
         "script-args": {
           "description": "Arguments to Saxon (for XSLT transformations) or to transformation script",
