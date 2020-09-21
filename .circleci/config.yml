@@ -4,9 +4,9 @@ jobs:
     docker:
       - image: ocrd/core
     steps:
+      - run: sudo apt-get install -y openjdk-8-jdk-headless wget git gcc unzip ssh
       - checkout
       - run: git submodule update --init
-      - run: sudo apt-get install -y openjdk-8-jdk-headless wget git gcc unzip
       - run: sudo make test
 
 workflows:
