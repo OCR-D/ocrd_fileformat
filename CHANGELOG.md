@@ -5,6 +5,12 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.1.0] - 2020-09-22
+
+Changed:
+
+  * correct extension is derived from media type by default, #19
+
 ## [0.0.7] - 2020-09-21
 
 Changed:
@@ -55,6 +61,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.1.0]: ../../compare/v0.1.0...v0.0.7
 [0.0.7]: ../../compare/v0.0.7...v0.0.6
 [0.0.6]: ../../compare/v0.0.6...v0.0.5
 [0.0.5]: ../../compare/v0.0.5...v0.0.4
