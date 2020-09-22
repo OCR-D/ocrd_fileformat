@@ -33,6 +33,13 @@ main () {
     script_args=(${params['script-args']:-})
     from_to=(${params['from-to']})
     output_extension=${params['ext']}
+    if [[ -z "$output_extension" ]];then
+        case "${from_to[1]}" in
+            page*|alto*) output_extension=".xml" ;;
+            hocr*) output_extension=".html" ;;
+            text*) output_extension=".txt" ;;
+        esac
+    fi
 
     # Download the files and do the conversion
     local IFS=$'\n'
