@@ -45,7 +45,7 @@
           ]
         },
         "ext": {
-          "description": "Output extension. Set to empty string to derive extension from mimetype.",
+          "description": "Output extension. Set to empty string to derive extension from the media type.",
           "type": "string",
           "default": ""
         },
