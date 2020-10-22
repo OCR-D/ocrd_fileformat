@@ -26,6 +26,7 @@ main () {
     page_id=${ocrd__argv[page_id]:-}
     in_file_grp=${ocrd__argv[input_file_grp]}
     out_file_grp=${ocrd__argv[output_file_grp]}
+    overwrite=${ocrd__argv[overwrite]}
     mkdir -p $out_file_grp
 
     # read params
@@ -102,6 +103,9 @@ main () {
             options=( -g $pageid )
         else
             options=()
+        fi
+        if [ "$overwrite" = "true" ];then
+            options+=(--force)
         fi
         options+=( -G $out_file_grp
                    -m "$output_mimetype"
