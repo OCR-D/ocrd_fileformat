@@ -5,6 +5,12 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.1.1] - 2020-10-22
+
+Fixed:
+
+  * Properly handle `--overwrite`, #16, #20
+
 ## [0.1.0] - 2020-09-22
 
 Changed:
@@ -61,6 +67,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.1.1]: ../../compare/v0.1.1...v0.1.0
 [0.1.0]: ../../compare/v0.1.0...v0.0.7
 [0.0.7]: ../../compare/v0.0.7...v0.0.6
 [0.0.6]: ../../compare/v0.0.6...v0.0.5
