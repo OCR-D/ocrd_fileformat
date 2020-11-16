@@ -38,7 +38,7 @@ Given a previous step `OCR`, which produces PAGE-XML, a conversion into plain
 text and an output group `OCR-TXT` can be achieved with:
 
 <details>
-  <summary><code>ocrd-fileformat-transform -I OCR -O OCR-TXT -p '{"from-to": "page text"}'</code></summary>
+  <summary><code>ocrd-fileformat-transform -I OCR -O OCR-TXT -P from-to "page text"</code></summary>
   <h4>With <a href="https://github.com/bertsky/workflow-configuration">bertsky/workflow-configuration</a></h4>
   <pre>
 CONVERT = OCR-TXT
@@ -59,6 +59,5 @@ requirement, it is the default value for the parameter `from-to`. Therefore,
 CONVERT = OCR-TXT
 $(CONVERT): $(OCR)
 $(CONVERT): TOOL = ocrd-fileformat-transform
-$(CONVERT): PARAMS = "from-to" : "page text"
 </pre>
 </details>
