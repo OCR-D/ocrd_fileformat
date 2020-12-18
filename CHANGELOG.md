@@ -5,6 +5,12 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.1.2] - 2020-12-18
+
+Fixed:
+
+  * Log transformation errors, #23
+
 ## [0.1.1] - 2020-10-22
 
 Fixed:
@@ -67,6 +73,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.1.2]: ../../compare/v0.1.2...v0.1.1
 [0.1.1]: ../../compare/v0.1.1...v0.1.0
 [0.1.0]: ../../compare/v0.1.0...v0.0.7
 [0.0.7]: ../../compare/v0.0.7...v0.0.6
