@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+#set -e
 set -u
 set -o pipefail
 # set -x
@@ -87,12 +87,11 @@ main () {
 
         # Actual conversion
         ocrd log -n "$SCRIPT_NAME" info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($pageid)"
-        output=$(ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- ${script_args[@]} 2>&1)
+        ocr-transform "${from_to[@]}" "$in_file" "$out_file" -- ${script_args[@]} 2>&1
         retval="$?"
 
         if (( retval > 0 ));then
             ocrd log -n "$SCRIPT_NAME" error "exited with status $retval: ocr-transform ${from_to[*]} $in_file $out_file -- ${script_args[@]}"
-            ocrd log -n "$SCRIPT_NAME" info "STDOUT/STDERR: $output"
             continue
         fi
 
