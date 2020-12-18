@@ -21,14 +21,16 @@ def sample_workspace(resolver):
 
 # TODO any assertions about the transformation
 def test_page_to_alto(resolver, sample_workspace):
-    code, out, err = run_cli(
+    code = run_cli(
         'ocrd-fileformat-transform',
         resolver=resolver,
+        overwrite=True,
         input_file_grp='TEMP2',
         output_file_grp='OUT',
         mets_url='mets.xml',
         parameter=dumps({'from-to': 'page alto'})
     )
+    assert not code
 
 if __name__ == '__main__':
     main([__file__])
