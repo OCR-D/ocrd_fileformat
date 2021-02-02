@@ -95,6 +95,11 @@ main () {
             continue
         fi
 
+        if [ ! -e "$out_file" ];then
+            ocrd log -n "$SCRIPT_NAME" error "Transformation exited with return value 0 but no file was written."
+            continue
+        fi
+
         # Add the output files
         ocrd log -n "$SCRIPT_NAME" info "Successfully executed: ocr-transform ${from_to[*]} $in_file $out_file -- ${script_args[@]}"
         declare -a options
