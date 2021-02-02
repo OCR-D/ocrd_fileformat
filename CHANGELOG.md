@@ -5,6 +5,8 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.2.0] - 2021-02-02
+
 Changed:
 
   * Update to current ocr-fileformat master, including UB-Mannheim/ocr-fileformat#131 and UB-Mannheim/ocr-fileformat#130
