@@ -8,6 +8,7 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 Changed:
 
   * Update to current ocr-fileformat master, including UB-Mannheim/ocr-fileformat#131 and UB-Mannheim/ocr-fileformat#130
+  * Handle output file not being written as an error, #25, #27
 
 ## [0.1.2] - 2020-12-18
 
