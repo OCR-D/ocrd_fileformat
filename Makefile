@@ -2,7 +2,7 @@ PROJECT_NAME := ocrd_fileformat
 SCRIPTS = ocrd-fileformat-transform
 DOCKER_TAG = ocrd/fileformat
 
-PIP ?= $(shell which pip)
+PIP ?= pip3
 
 # Directory to install to ('$(PREFIX)')
 PREFIX ?= $(if $(VIRTUAL_ENV),$(VIRTUAL_ENV),/usr/local)
@@ -87,7 +87,7 @@ assets-clean:
 
 # Install dev dependencies with pip
 deps-test:
-	pip install -r requirements-test.txt
+	$(PIP) install -r requirements-test.txt
 
 # Run tests with pytest
 test: install deps-test assets
