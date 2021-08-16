@@ -5,6 +5,12 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.3.0] - 2021-08-16
+
+Changed:
+
+  * Update ocr-fileformat to include UB-Mannheim/ocr-fileformat#134
+
 ## [0.2.1] - 2021-02-16
 
 Changed:
@@ -86,6 +92,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.3.0]: ../../compare/v0.3.0...v0.2.1
 [0.2.1]: ../../compare/v0.2.1...v0.2.0
 [0.2.0]: ../../compare/v0.2.0...v0.1.2
 [0.1.1]: ../../compare/v0.1.1...v0.1.0
