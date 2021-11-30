@@ -50,6 +50,7 @@ main () {
         -k local_filename \
         -k ID \
         -k pageId \
+        -k mimetype \
         --download))
     local IFS=$' \t\n'
     local n=0 zeros=0000
@@ -63,10 +64,16 @@ main () {
         local in_file="${fields[0]}"
         local in_id="${fields[1]}"
         local pageid="${fields[2]:-}"
+        local mimetype="${fields[3]:-}"
 
-        if ! test -f "$in_file"; then
-           ocrd log -n "$SCRIPT_NAME" error "input file \"$in_file\" ID=${in_id} (pageId=${pageid}) is not on disk"
-           continue
+        if [[ "$mimetype" =~ ^image/.* ]]; then
+            ocrd log -n "$SCRIPT_NAME" debug "ignoring image $in_id ($pageid)"
+            continue
+        elif ! test -f "$in_file"; then
+            ocrd log -n "$SCRIPT_NAME" error "input file \"$in_file\" ID=${in_id} (pageId=${pageid}) is not on disk"
+            continue
+        else
+            ocrd log -n "$SCRIPT_NAME" debug "processing input file $in_id ($pageid)"
         fi
 
         # Output filename
