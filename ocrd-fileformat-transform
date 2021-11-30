@@ -91,7 +91,7 @@ main () {
         retval="$?"
 
         if (( retval > 0 ));then
-            ocrd log -n "$SCRIPT_NAME" error "exited with status $retval: ocr-transform ${from_to[*]} $in_file $out_file -- ${script_args[@]}"
+            ocrd log -n "$SCRIPT_NAME" error "exited with status $retval: ocr-transform ${from_to[*]} $in_file $out_file -- ${script_args[*]}"
             continue
         fi
 
@@ -101,7 +101,7 @@ main () {
         fi
 
         # Add the output files
-        ocrd log -n "$SCRIPT_NAME" info "Successfully executed: ocr-transform ${from_to[*]} $in_file $out_file -- ${script_args[@]}"
+        ocrd log -n "$SCRIPT_NAME" info "Successfully executed: ocr-transform ${from_to[*]} $in_file $out_file -- ${script_args[*]}"
         declare -a options
         if [ -n "$pageid" ]; then
             options=( -g $pageid )
