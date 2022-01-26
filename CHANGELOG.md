@@ -5,6 +5,13 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.4.0] - 2022-01-26
+
+Changed:
+
+  * Update ocr-fileformat to include UB-Mannheim/ocr-fileformat#142 (Pass arguments to page-to-alto)
+
+
 ## [0.3.0] - 2021-08-16
 
 Changed:
