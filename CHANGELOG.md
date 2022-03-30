@@ -5,6 +5,8 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.4.1] - 2022-03-30
+
 Fixed:
 
   * Do not fail for unset variables like `COLORTERM`, #37, #38
