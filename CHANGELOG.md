@@ -5,6 +5,10 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Fixed:
+
+  * Allow all transforms currently supported by ocr-fileformat to `from-to`
+
 ## [0.4.1] - 2022-03-30
 
 Fixed:
