@@ -2,6 +2,7 @@
 #set -e
 #set -u
 set -o pipefail
+set -m
 # set -x
 
 which ocrd >/dev/null 2>/dev/null || { echo "ocrd not in \$PATH. Panicking"; exit 1; }
@@ -10,6 +11,7 @@ SHAREDIR="$(cd "$(dirname "$0")" >/dev/null && pwd)"
 SCRIPT_NAME="${0##*/}"
 
 MIMETYPE_PAGE=$(ocrd bashlib constants MIMETYPE_PAGE)
+NJOBS=2 # maximum number of concurrent processes (to better utilize CPU, since this is mostly I/O bound)
 
 main () {
     # Load ocrd bashlib functions
@@ -45,7 +47,12 @@ main () {
         text) out_mimetype="text/plain" ;;
     esac
 
+    local results=$(mktemp -d)
     for ((n=0; n<${#ocrd__files[*]}; n++)); do
+        if (($(jobs -p | wc -l) > $NJOBS + 1)); then
+            wait -n # first wait for next subshell (from other iteration) to finish
+        fi
+        (
         local in_fpath="$(ocrd__input_file $n url)"
         local in_id="$(ocrd__input_file $n ID)"
         local in_mimetype="$(ocrd__input_file $n mimetype)"
@@ -54,37 +61,34 @@ main () {
         local out_fpath="$out_file_grp/${out_id}.xml"
 
         if [[ "$in_mimetype" =~ ^image/.* ]]; then
-            ocrd log debug "ignoring image $in_id ($in_pageId)"
-            continue
+            ocrd__log debug "ignoring image $in_id ($in_pageId)"
+            exit # continue
         elif ! test -f "${in_fpath#file://}"; then
-            ocrd log error "input file \"$in_fpath\" ID=${in_id} (pageId=${in_pageId}) is not on disk"
-            continue
+            ocrd__log error "input file \"$in_fpath\" ID=${in_id} (pageId=${in_pageId}) is not on disk"
+            exit # continue
         else
-            ocrd log debug "processing input file $in_id ($in_pageId)"
+            ocrd__log debug "processing input file $in_id ($in_pageId)"
         fi
         mkdir -p $out_file_grp
 
         # Actual conversion
-        ocrd log info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($in_pageId)"
-        ocr-transform "${from_to[@]}" "$in_fpath" "$out_fpath" -- ${script_args[@]} 2>&1
-        retval="$?"
-
-        if (( retval > 0 ));then
-            ocrd log error "exited with status $retval: ocr-transform ${from_to[*]} $in_fpath $out_fpath -- ${script_args[*]}"
-            continue
-        fi
-
-        if [ ! -e "$out_fpath" ];then
-            ocrd log error "Transformation exited with return value 0 but no file was written."
-            continue
+        ocrd__log info "${from_to[0]} --> ${from_to[1]}: input file $in_id ($in_pageId)"
+        if ! ocr-transform "${from_to[@]}" "$in_fpath" "$out_fpath" -- ${script_args[@]} 2>&1; then
+            ocrd__log error "exited with status $retval: ocr-transform ${from_to[*]} $in_fpath $out_fpath -- ${script_args[*]}"
+            exit # continue
+        elif [ ! -e "$out_fpath" ]; then
+            ocrd__log error "Transformation exited with return value 0 but no file was written."
+            exit # continue
         fi
 
         # Add the output files
-        ocrd log info "Successfully executed: ocr-transform ${from_to[*]} $in_fpath $out_fpath -- ${script_args[*]}"
+        ocrd__log info "Successfully executed: ocr-transform ${from_to[*]} $in_fpath $out_fpath -- ${script_args[*]}"
 
         # Aggregate all METS actions
-        results+=( "$in_pageId $out_id $out_fpath" )
+        echo "$in_pageId $out_id $out_fpath" > $results/$BASHPID # no $$ in subshells
+        )&
     done
+    wait # wait for all remaining jobs to finish
 
     # Write resulting METS at once
     declare -a options
@@ -94,9 +98,8 @@ main () {
     if [ "$overwrite" = "true" ];then
         options+=(--force)
     fi
-    IFS=$'\n'
-    echo "${results[*]}" | ocrd workspace bulk-add "${options[@]}" -
-    IFS=$' \t\n'
+    cat $results/* | sort | ocrd workspace bulk-add "${options[@]}" -
+    rm -fr $results
 }
 
 
