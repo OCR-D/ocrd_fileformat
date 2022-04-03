@@ -1,5 +1,5 @@
 PROJECT_NAME := ocrd_fileformat
-SCRIPTS = ocrd-fileformat-transform
+TOOLS = ocrd-fileformat-transform
 DOCKER_TAG = ocrd/fileformat
 
 PIP ?= pip3
@@ -40,14 +40,19 @@ install-fileformat:
 	make -C repo/ocr-fileformat PREFIX=$(PREFIX) vendor install
 
 # Install the executable in $(PREFIX)/bin and the ocrd-tool.json to $(SHAREDIR)
-install: install-fileformat deps
-	mkdir -p $(BINDIR)
-	for script in $(SCRIPTS);do \
-		sed 's,^SHAREDIR.*,SHAREDIR="$(SHAREDIR)",' $$script > $(BINDIR)/$$script ;\
-		chmod a+x $(BINDIR)/$$script ;\
-	done
+install: deps install-fileformat install-tools
+
+install-tools: $(SHAREDIR)/ocrd-tool.json
+install-tools: $(TOOLS:%=$(BINDIR)/%)
+
+$(SHAREDIR)/ocrd-tool.json: ocrd-tool.json
 	mkdir -p $(SHAREDIR)
 	cp ocrd-tool.json $(SHAREDIR)
+
+$(TOOLS:%=$(BINDIR)/%): $(BINDIR)/%: %
+	mkdir -p $(BINDIR)
+	sed 's,^SHAREDIR.*,SHAREDIR="$(SHAREDIR)",' $< > $@
+	chmod a+x $@
 ifeq ($(findstring $(BINDIR),$(subst :, ,$(PATH))),)
 	@echo "you need to add '$(BINDIR)' to your PATH"
 else
@@ -56,11 +61,9 @@ endif
 
 # Uninstall scripts and $(SHAREDIR)
 uninstall:
-	for script in $(SCRIPTS);do \
-		rm --verbose --force "$(BINDIR)/$$script";\
-	done
-	rm -rfv $(SHAREDIR)
-	make -C repo/ocr-fileformat PREFIX=$(PREFIX) uninstall
+	-$(RM) -v $(SHAREDIR)
+	-$(RM) -v $(TOOLS:%=$(BINDIR)/%)
+	-$(MAKE) -C repo/ocr-fileformat PREFIX=$(PREFIX) uninstall
 
 # Build Docker image
 docker:
@@ -95,4 +98,4 @@ test: install deps-test assets
 
 
 
-.PHONY: help deps install-fileformat install uninstall docker
+.PHONY: help deps install-fileformat install-tools install uninstall docker
