@@ -8,6 +8,7 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 Fixed:
 
   * Allow all transforms currently supported by ocr-fileformat to `from-to`
+  * Speed up main loop, and run (mildly) parallel
 
 ## [0.4.1] - 2022-03-30
 
