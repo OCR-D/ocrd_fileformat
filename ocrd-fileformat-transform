@@ -18,7 +18,7 @@ main () {
 
     # Describe calling script to lib.bash
     ocrd__wrap "$SHAREDIR/ocrd-tool.json" "$SCRIPT_NAME" "$@"
-    ocrd__minversion 2.29.0
+    ocrd__minversion 2.30.0
 
     cd "${ocrd__argv[working_dir]}"
     page_id=${ocrd__argv[page_id]:-}
@@ -81,21 +81,22 @@ main () {
 
         # Add the output files
         ocrd log info "Successfully executed: ocr-transform ${from_to[*]} $in_fpath $out_fpath -- ${script_args[*]}"
-        declare -a options
-        if [ -n "$in_pageId" ]; then
-            options=( -g $in_pageId )
-        else
-            options=()
-        fi
-        if [ "$overwrite" = "true" ];then
-            options+=(--force)
-        fi
-        options+=( -G $out_file_grp
-                   -m "$out_mimetype"
-                   -i "$out_id"
-                   "$out_fpath" )
-        ocrd workspace add "${options[@]}"
+
+        # Aggregate all METS actions
+        results+=( "$in_pageId $out_id $out_fpath" )
     done
+
+    # Write resulting METS at once
+    declare -a options
+    options=(-G $out_file_grp -m "$out_mimetype")
+    options+=(-r '(?P<page>[^ ]*) (?P<fid>[^ ]*) (?P<fpath>.*)')
+    options+=(-g '{{ page }}' -i '{{ fid }}' -S '{{ fpath }}')
+    if [ "$overwrite" = "true" ];then
+        options+=(--force)
+    fi
+    IFS=$'\n'
+    echo "${results[*]}" | ocrd workspace bulk-add "${options[@]}" -
+    IFS=$' \t\n'
 }
 
 
