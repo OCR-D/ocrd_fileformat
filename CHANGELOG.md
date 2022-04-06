@@ -5,6 +5,8 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.5.0] - 2022-04-06
+
 Fixed:
 
   * Allow all transforms currently supported by ocr-fileformat to `from-to`
@@ -110,6 +112,9 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.5.0]: ../../compare/v0.5.0...v0.4.1
+[0.4.1]: ../../compare/v0.4.1...v0.4.0
+[0.4.0]: ../../compare/v0.4.0...v0.3.0
 [0.3.0]: ../../compare/v0.3.0...v0.2.1
 [0.2.1]: ../../compare/v0.2.1...v0.2.0
 [0.2.0]: ../../compare/v0.2.0...v0.1.2
