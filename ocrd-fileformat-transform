@@ -23,6 +23,7 @@ main () {
     ocrd__minversion 2.30.0
 
     cd "${ocrd__argv[working_dir]}"
+    mets_basename=$(basename ${ocrd__argv[mets_file]})
     page_id=${ocrd__argv[page_id]:-}
     in_file_grp=${ocrd__argv[input_file_grp]}
     out_file_grp=${ocrd__argv[output_file_grp]}
@@ -98,7 +99,7 @@ main () {
     if [ "$overwrite" = "true" ];then
         options+=(--force)
     fi
-    cat $results/* | sort | ocrd workspace bulk-add "${options[@]}" -
+    cat $results/* | sort | ocrd workspace -m "$mets_basename" bulk-add "${options[@]}" -
     rm -fr $results
 }
 
