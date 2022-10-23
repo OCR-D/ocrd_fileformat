@@ -5,6 +5,10 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Changed:
+
+  * PAGE-to-ALTO: Improved ordering of lines by index, kba/page-to-alto#29 kba/page-to-alto#32
+
 ## [0.5.0] - 2022-04-06
 
 Fixed:
