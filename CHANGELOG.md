@@ -5,6 +5,10 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Fixed:
+
+  * re-use METS basename for output, #40, #41
+
 ## [0.6.0] - 2022-11-08
 
 Changed:
