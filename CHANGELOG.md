@@ -5,6 +5,10 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Fixed:
+
+  * `make deps` should not update `ocrd`, #43, #44
+
 ## [0.6.1] - 2022-11-10
 
 Fixed:
