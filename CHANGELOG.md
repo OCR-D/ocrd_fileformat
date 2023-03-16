@@ -5,6 +5,8 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.6.2] - 2023-03-16
+
 Fixed:
 
   * `make deps` should not update `ocrd`, #43, #44
@@ -129,6 +131,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.6.2]: ../../compare/v0.6.2...v0.6.1
 [0.6.1]: ../../compare/v0.6.1...v0.6.0
 [0.6.0]: ../../compare/v0.6.0...v0.5.0
 [0.5.0]: ../../compare/v0.5.0...v0.4.1
