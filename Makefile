@@ -34,7 +34,7 @@ help:
 
 # Install python packages
 deps:
-	$(PIP) install -U ocrd # needed for ocrd CLI (and bashlib)
+	$(PIP) install ocrd # needed for ocrd CLI (and bashlib)
 
 install-fileformat:
 	make -C repo/ocr-fileformat PREFIX=$(PREFIX) vendor install
