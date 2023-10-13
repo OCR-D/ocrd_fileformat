@@ -5,6 +5,8 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.8.0] - 2023-10-13
+
 Changed:
 
   * Update [ocr-fileformat](https://github.com/UB-Mannheim/ocr-fileformat/commits/master):
@@ -147,6 +149,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.8.0]: ../../compare/v0.8.0...v0.7.0
 [0.7.0]: ../../compare/v0.7.0...v0.6.2
 [0.6.2]: ../../compare/v0.6.2...v0.6.1
 [0.6.1]: ../../compare/v0.6.1...v0.6.0
