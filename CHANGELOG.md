@@ -5,6 +5,14 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Changed:
+
+  * Update [ocr-fileformat](https://github.com/UB-Mannheim/ocr-fileformat/commits/master):
+    * Fix broken conversions from hOCR to ALTO
+    * update textract2page, hOCR-to-ALTO and alto-schema
+    * add PRImA converter for GCV→ALTO
+    * add ALTO 4.2 → 2.1
+
 ## [0.7.0] - 2023-03-16
 
 Changed:
