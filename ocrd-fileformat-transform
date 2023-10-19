@@ -54,7 +54,7 @@ main () {
             wait -n # first wait for next subshell (from other iteration) to finish
         fi
         (
-        local in_fpath="$(ocrd__input_file $n url)"
+        local in_fpath="$(ocrd__input_file $n local_filename)"
         local in_id="$(ocrd__input_file $n ID)"
         local in_mimetype="$(ocrd__input_file $n mimetype)"
         local in_pageId="$(ocrd__input_file $n pageId)"
@@ -92,14 +92,19 @@ main () {
     wait # wait for all remaining jobs to finish
 
     # Write resulting METS at once
-    declare -a options
-    options=(-G $out_file_grp -m "$out_mimetype")
-    options+=(-r '(?P<page>[^ ]*) (?P<fid>[^ ]*) (?P<fpath>.*)')
-    options+=(-g '{{ page }}' -i '{{ fid }}' -S '{{ fpath }}')
+    declare -a bulk_options
+    bulk_options=(-G $out_file_grp -m "$out_mimetype")
+    bulk_options+=(-r '(?P<page>[^ ]*) (?P<fid>[^ ]*) (?P<fpath>.*)')
+    bulk_options+=(-g '{{ page }}' -i '{{ fid }}' -S '{{ fpath }}')
     if [ "$overwrite" = "true" ];then
-        options+=(--force)
+        bulk_options+=(--force)
     fi
-    cat $results/* | sort | ocrd workspace -m "$mets_basename" bulk-add "${options[@]}" -
+    declare -a workspace_options
+    workspace_options=( -m "$mets_basename" )
+    if [[ -n "${ocrd__argv[mets_server_url]}" ]];then
+        workspace_options+=( -U "${ocrd__argv[mets_server_url]}" )
+    fi
+    cat $results/* | sort | ocrd workspace "${workspace_options[@]}" bulk-add "${bulk_options[@]}" -
     rm -fr $results
 }
 
