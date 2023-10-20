@@ -5,6 +5,14 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Added:
+
+  * Support for `--mets-server-url`, #48
+
+Fixed:
+
+  * Use `local_filename` not `url`, #48, OCR-D/core#1079
+
 ## [0.8.0] - 2023-10-13
 
 Changed:
