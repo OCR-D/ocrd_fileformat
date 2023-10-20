@@ -5,6 +5,10 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Fixed:
+
+  * require OCR-D/core >= 2.58.1, #49
+
 ## [0.9.0] - 2023-10-20
 
 Added:
