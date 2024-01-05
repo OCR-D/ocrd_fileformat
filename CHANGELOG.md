@@ -5,6 +5,22 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Changed:
+
+  * Update [ocr-fileformat](https://github.com/UB-Mannheim/ocr-fileformat/commits/master):
+    * Add CodeQL workflow for GitHub code scanning by @lgtm-com in UB-Mannheim/ocr-fileformat#155
+    * gcv__page: use -source-json instead of -source-xml by @bertsky in UB-Mannheim/ocr-fileformat#156
+    * make install: use newline in sed c cmd by @bertsky in UB-Mannheim/ocr-fileformat#158
+    * Add textract2page by @bertsky in UB-Mannheim/ocr-fileformat#160
+    * ensure venv for Python tools by @bertsky in UB-Mannheim/ocr-fileformat#162
+    * add PRImA converter for GCV→ALTO by @bertsky in UB-Mannheim/ocr-fileformat#163
+    * Update Makefile to support macOS by @stweil in UB-Mannheim/ocr-fileformat#165
+    * update textract2page, hOCR-to-ALTO and alto-schema by @kba in UB-Mannheim/ocr-fileformat#166
+    * Fix two issues reported by CodeQL CI by @stweil in UB-Mannheim/ocr-fileformat#161
+    * Fix broken conversions from hOCR to ALTO by @stweil in UB-Mannheim/ocr-fileformat#167
+    * Replace broken Travis CI by GitHub action by @stweil in UB-Mannheim/ocr-fileformat#168
+    * Use first bash from PATH (allows running on macOS) by @stweil in UB-Mannheim/ocr-fileformat#169
+
 ## [0.9.1] - 2023-10-20
 
 Fixed:
