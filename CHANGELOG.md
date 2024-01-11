@@ -20,6 +20,7 @@ Changed:
     * Fix broken conversions from hOCR to ALTO by @stweil in UB-Mannheim/ocr-fileformat#167
     * Replace broken Travis CI by GitHub action by @stweil in UB-Mannheim/ocr-fileformat#168
     * Use first bash from PATH (allows running on macOS) by @stweil in UB-Mannheim/ocr-fileformat#169
+    * Update page-to-alto to v1.3.0 by @kba in UB-Mannheim/ocr-fileformat#172
 
 ## [0.9.1] - 2023-10-20
 
