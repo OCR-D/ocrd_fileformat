@@ -44,10 +44,12 @@
             "hocr page",
             "hocr text",
             "page alto",
+            "page alto_legacy",
             "page hocr",
             "page page2019",
             "page text",
-            "tei hocr"
+            "tei hocr",
+            "textract page"
           ]
         },
         "ext": {
