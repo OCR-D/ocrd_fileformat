@@ -82,7 +82,7 @@ assets: repo/assets $(TESTDIR)/assets
 # Setup test assets
 $(TESTDIR)/assets:
 	mkdir -p $(TESTDIR)/assets
-	cp -r -t $(TESTDIR)/assets repo/assets/data/*
+	cp -r repo/assets/data/* $(TESTDIR)/assets
 
 # Remove $(TESTDIR)/assets
 assets-clean:
