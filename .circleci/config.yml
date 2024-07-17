@@ -15,6 +15,7 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
+      - run: git submodule update --init
       - setup_remote_docker: # https://circleci.com/docs/2.0/building-docker-images/
           docker_layer_caching: true
       - run: make docker
