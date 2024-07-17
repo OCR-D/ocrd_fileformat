@@ -5,6 +5,19 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.11.0] - 2024-07-17
+
+Changed:
+
+  * Update [ocr-fileformat](https://github.com/UB-Mannheim/ocr-fileformat/commits/master):
+    * Add transformation from hOCR to TEI and update transformation matrix by @stweil in #170
+    * update textract2page to include slub/textract2page#13 by @kba in #171
+    * update vendor/page-to-alto v1.2.0 -> v1.3.0 by @kba in #172
+    * Update Dockerfile, fix #173 by @kba in #174
+    * update textract2page by @bertsky in #177
+    * update textract2page (for valid @conf ranges) by @bertsky in #180
+    * update textract2page (v 0.2 - full LAYOUT etc.) by @bertsky in #186
+
 ## [0.10.0] - 2024-01-11
 
 Changed:
