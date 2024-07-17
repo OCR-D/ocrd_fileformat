@@ -14,7 +14,8 @@ ENV PREFIX=/usr/local
 RUN apt-get update && apt-get install -y openjdk-11-jdk-headless wget git gcc unzip
 
 WORKDIR /build
-COPY ocr-fileformat ocr-fileformat/
+COPY .git .git/
+COPY repo/ocr-fileformat repo/ocr-fileformat/
 COPY ocrd-fileformat-transform .
 COPY ocrd-tool.json .
 COPY Makefile .
