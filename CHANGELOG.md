@@ -5,6 +5,12 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.11.1] - 2024-07-17
+
+Fixed:
+
+  * Fixed Docker build, no functional changes from v0.11.0
+
 ## [0.11.0] - 2024-07-17
 
 Changed:
