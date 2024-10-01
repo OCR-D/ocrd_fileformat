@@ -13,7 +13,7 @@ def resolver():
 
 @fixture
 def sample_workspace(resolver):
-    workspace = resolver.workspace_from_url(assets.path_to('gutachten/data/mets.xml'))
+    workspace = resolver.workspace_from_url(assets.path_to('kant_aufklaerung_1784/data/mets.xml'))
     oldpwd = getcwd()
     chdir(workspace.directory)
     yield workspace
@@ -25,7 +25,7 @@ def test_page_to_alto(resolver, sample_workspace):
         'ocrd-fileformat-transform',
         resolver=resolver,
         overwrite=True,
-        input_file_grp='TEMP2',
+        input_file_grp='OCR-D-GT-PAGE',
         output_file_grp='OUT',
         mets_url='mets.xml',
         parameter=dumps({'from-to': 'page alto'})
