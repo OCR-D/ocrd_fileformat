@@ -1,5 +1,5 @@
-FROM ocrd/core
-
+ARG DOCKER_BASE_IMAGE
+FROM $DOCKER_BASE_IMAGE
 ARG VCS_REF
 ARG BUILD_DATE
 LABEL \
@@ -13,15 +13,19 @@ ENV PREFIX=/usr/local
 
 RUN apt-get update && apt-get install -y openjdk-11-jdk-headless wget git gcc unzip
 
-WORKDIR /build
+WORKDIR /build/ocrd_fileformat
+
 COPY .git .git/
 COPY repo/ocr-fileformat repo/ocr-fileformat/
 COPY ocrd-fileformat-transform .
 COPY ocrd-tool.json .
 COPY Makefile .
-RUN make install-fileformat install PREFIX=/usr/local SHELL="bash -x"
+
+RUN make install-fileformat install PREFIX=$PREFIX SHELL="bash -x" && \
+    rm -fr /build/ocrd_fileformat
+# smoke test
+RUN ocrd-fileformat-transform --version
 
 WORKDIR /data
 ENV DEBIAN_FRONTEND teletype
-CMD ["/usr/local/bin/ocrd-fileformat-transform", "--help"]
 
