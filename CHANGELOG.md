@@ -5,6 +5,11 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+Changed:
+
+  * Update [ocr-fileformat](https://github.com/UB-Mannheim/ocr-fileformat/commits/master):
+    * update [page-to-alto](https://github.com/OCR-D/page-to-alto) to v1.4.1
+
 ## [0.11.1] - 2024-07-17
 
 Fixed:
