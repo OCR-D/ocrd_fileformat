@@ -1,5 +1,6 @@
-DOCKER_BASE_IMAGE ?= docker.io/ocrd/core:v3.3.0
+DOCKER_BASE_IMAGE ?= docker.io/ocrd/core:latest
 DOCKER_TAG ?= ocrd/fileformat
+DOCKER ?= docker
 
 PYTHON ?= python3
 PIP ?= pip3
@@ -46,7 +47,7 @@ build:
 
 # Build Docker image
 docker:
-	docker build \
+	$(DOCKER) build \
 	--build-arg DOCKER_BASE_IMAGE=$(DOCKER_BASE_IMAGE) \
 	--build-arg VCS_REF=$$(git rev-parse --short HEAD) \
 	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \

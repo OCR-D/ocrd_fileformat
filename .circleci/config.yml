@@ -4,11 +4,11 @@ jobs:
     docker:
       - image: ocrd/core
     steps:
-      - run: sudo apt-get update
-      - run: sudo apt-get install -y openjdk-8-jdk-headless wget git gcc unzip ssh
       - checkout
-      - run: git submodule update --init
-      - run: sudo make test
+      - run: sudo apt-get update
+      - run: sudo make deps-ubuntu
+      - run: make install deps-test
+      - run: make test
 
   deploy-docker:
     docker:
