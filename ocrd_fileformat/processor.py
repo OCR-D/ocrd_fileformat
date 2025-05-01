@@ -19,11 +19,15 @@ class FileformatTransform(Processor):
 
     def process_page_file(self, *input_files : Optional[OcrdFileType]) -> None:
         """
-        wraps format transformation with ocr-fileformat
+        Transform pages with ocr-fileformat
 
-        For each page, open and deserialize input file
+        For each page, download input file, pass it to
+        ``ocr-transform`` with `from-to` format specifier
+        and optionally `script-args` for conversion. Then
+        add the resulting file to the output file group.
 
-        ...
+        Handle output MIME type and file name suffix
+        according to target format.
         """
         # from core's ocrd.processor.base
         input_file = input_files[0]
