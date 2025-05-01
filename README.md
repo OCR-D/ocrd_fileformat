@@ -35,47 +35,53 @@ which conversions are supported already:
 <details>
   <summary><code>ocrd-fileformat-transform -h</code></summary>
   <pre>
-Usage: ocrd-fileformat-transform [OPTIONS]
+Usage: ocrd-fileformat-transform [worker|server] [OPTIONS]
 
   Convert between OCR file formats
 
-  &gt; Processor base class and helper functions. A processor is a tool
-  &gt; that implements the uniform OCR-D command-line interface for run-
-  &gt; time data processing. That is, it executes a single workflow step,
-  &gt; or a combination of workflow steps, on the workspace (represented by
-  &gt; local METS). It reads input files for all or requested physical
-  &gt; pages of the input fileGrp(s), and writes output files for them into
-  &gt; the output fileGrp(s). It may take  a number of optional or
-  &gt; mandatory parameters. Process the :py:attr:`workspace`  from the
-  &gt; given :py:attr:`input_file_grp` to the given
-  &gt; :py:attr:`output_file_grp` for the given :py:attr:`page_id` under
-  &gt; the given :py:attr:`parameter`.
+  > Transform pages with ocr-fileformat
 
-  &gt; (This contains the main functionality and needs to be overridden by
-  &gt; subclasses.)
+  > For each page, download input file, pass it to ``ocr-transform``
+  > with `from-to` format specifier and optionally `script-args` for
+  > conversion. Then add the resulting file to the output file group.
 
-Options:
+  > Handle output MIME type and file name suffix according to target
+  > format.
+
+Subcommands:
+    worker      Start a processing worker rather than do local processing
+    server      Start a processor server rather than do local processing
+
+Options for processing:
+  -m, --mets URL-PATH             URL or file path of METS to process [./mets.xml]
+  -w, --working-dir PATH          Working directory of local workspace [dirname(URL-PATH)]
   -I, --input-file-grp USE        File group(s) used as input
   -O, --output-file-grp USE       File group(s) used as output
-  -g, --page-id ID                Physical page ID(s) to process
+  -g, --page-id ID                Physical page ID(s) to process instead of full document []
   --overwrite                     Remove existing output pages/images
-                                  (with --page-id, remove only those)
+                                  (with "--page-id", remove only those).
+                                  Short-hand for OCRD_EXISTING_OUTPUT=OVERWRITE
+  --debug                         Abort on any errors with full stack trace.
+                                  Short-hand for OCRD_MISSING_OUTPUT=ABORT
+  --profile                       Enable profiling
+  --profile-file PROF-PATH        Write cProfile stats to PROF-PATH. Implies "--profile"
   -p, --parameter JSON-PATH       Parameters, either verbatim JSON string
                                   or JSON file path
   -P, --param-override KEY VAL    Override a single JSON object key-value pair,
                                   taking precedence over --parameter
-  -s, --server HOST PORT WORKERS  Run web server instead of one-shot processing
-                                  (shifts mets/working-dir/page-id options to
-                                   HTTP request arguments); pass network interface
-                                  to bind to, TCP port, number of worker processes
-  -m, --mets URL-PATH             URL or file path of METS to process
-  -w, --working-dir PATH          Working directory of local workspace
+  -U, --mets-server-url URL       URL of a METS Server for parallel incremental access to METS
+                                  If URL starts with http:// start an HTTP server there,
+                                  otherwise URL is a path to an on-demand-created unix socket
   -l, --log-level [OFF|ERROR|WARN|INFO|DEBUG|TRACE]
-                                  Log level
+                                  Override log level globally [INFO]
+  --log-filename LOG-PATH         File to redirect stderr logging to (overriding ocrd_logging.conf).
+
+Options for information:
   -C, --show-resource RESNAME     Dump the content of processor resource RESNAME
   -L, --list-resources            List names of processor resources
-  -J, --dump-json                 Dump tool description as JSON and exit
-  -h, --help                      This help message
+  -J, --dump-json                 Dump tool description as JSON
+  -D, --dump-module-dir           Show the 'module' resource location path for this processor
+  -h, --help                      Show this message
   -V, --version                   Show version
 
 Parameters:
@@ -85,20 +91,23 @@ Parameters:
     "alto2.0 alto3.1", "alto2.0 hocr", "alto2.1 alto3.0", "alto2.1
     alto3.1", "alto2.1 hocr", "alto page", "alto text", "gcv hocr", "gcv
     page", "hocr alto2.0", "hocr alto2.1", "hocr page", "hocr text",
-    "page alto", "page hocr", "page page2019", "page text", "tei hocr"]
+    "page alto", "page alto_legacy", "page hocr", "page page2019", "page
+    text", "tei hocr", "textract page"]
    "ext" [string - ""]
     Output extension. Set to empty string to derive extension from the
     media type.
    "script-args" [string - ""]
     Arguments to Saxon (for XSLT transformations) or to transformation
     script
+
+
 </pre>
 </details>
 
-With the [OCR-D](https://ocr-d.de/en/spec/intro) [CLI](https://ocr-d.de/en/spec/cli) wrapper
-the `ocr-fileformat` converter integrates fluently into existing OCR-D tool [workflows](https://ocr-d.de/en/workflows).
+With this [OCR-D](https://ocr-d.de/en/spec/intro) [CLI](https://ocr-d.de/en/spec/cli) wrapper,
+the `ocr-fileformat` converter integrates fluently into OCR-D tool [workflows](https://ocr-d.de/en/workflows).
 
-Given a previous step which produces PAGE-XML under the file group `OCR`,
+For example, given a previous step which produced PAGE-XML under the file group `OCR`,
 a conversion into plain text under the file group `OCR-TXT` can be achieved with:
 
 <details>
