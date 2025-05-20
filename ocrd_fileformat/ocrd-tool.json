@@ -1,0 +1,61 @@
+{
+  "version": "0.12.0",
+  "git_url": "https://github.com/OCR-D/ocrd_fileformat",
+  "dockerhub": "ocrd/fileformat",
+  "tools": {
+    "ocrd-fileformat-transform": {
+      "executable": "ocrd-fileformat-transform",
+      "description": "Convert between OCR file formats",
+      "categories": [
+        "Long-term preservation"
+      ],
+      "steps": [
+        "postprocessing/format-conversion"
+      ],
+      "input_file_grp_cardinality": 1,
+      "output_file_grp_cardinality": 1,
+      "parameters": {
+        "from-to": {
+          "description": "Transformation scenario, see ocr-fileformat -L",
+          "type": "string",
+          "default": "page alto",
+          "enum": [
+            "abbyy hocr",
+            "abbyy page",
+            "alto2.0 alto3.0",
+            "alto2.0 alto3.1",
+            "alto2.0 hocr",
+            "alto2.1 alto3.0",
+            "alto2.1 alto3.1",
+            "alto2.1 hocr",
+            "alto page",
+            "alto text",
+            "gcv hocr",
+            "gcv page",
+            "hocr alto2.0",
+            "hocr alto2.1",
+            "hocr page",
+            "hocr text",
+            "page alto",
+            "page alto_legacy",
+            "page hocr",
+            "page page2019",
+            "page text",
+            "tei hocr",
+            "textract page"
+          ]
+        },
+        "ext": {
+          "description": "Output extension. Set to empty string to derive extension from the media type.",
+          "type": "string",
+          "default": ""
+        },
+        "script-args": {
+          "description": "Arguments to Saxon (for XSLT transformations) or to transformation script",
+          "type": "string",
+          "default": ""
+        }
+      }
+    }
+  }
+}

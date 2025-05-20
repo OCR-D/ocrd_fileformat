@@ -1,36 +1,55 @@
-from os import chdir, getcwd
-from json import dumps
+import os
+from pytest import skip
 
-from pytest import fixture, main
-from tests.assets import assets
+from ocrd_fileformat.processor import FileformatTransform
+from ocrd import run_processor
+from ocrd_utils import MIMETYPE_PAGE
 
-from ocrd import Resolver
-from ocrd.processor.helpers import run_cli
+MIMETYPE_ALTO = '//text/xml|application/alto[+]xml'
 
-@fixture
-def resolver():
-    return Resolver()
-
-@fixture
-def sample_workspace(resolver):
-    workspace = resolver.workspace_from_url(assets.path_to('kant_aufklaerung_1784/data/mets.xml'))
-    oldpwd = getcwd()
-    chdir(workspace.directory)
-    yield workspace
-    chdir(oldpwd)
-
-# TODO any assertions about the transformation
-def test_page_to_alto(resolver, sample_workspace):
-    code = run_cli(
-        'ocrd-fileformat-transform',
-        resolver=resolver,
-        overwrite=True,
-        input_file_grp='OCR-D-GT-PAGE',
-        output_file_grp='OUT',
-        mets_url='mets.xml',
-        parameter=dumps({'from-to': 'page alto'})
+def test_convert(processor_kwargs):
+    ws = processor_kwargs['workspace']
+    pages = processor_kwargs['page_id'].split(',')
+    if ws.name == 'sbb':
+        pages.remove('PHYS_0005') # not in all fileGrps
+    page1 = pages[0]
+    file1 = next(reversed(list(ws.find_files(page_id=page1, mimetype=MIMETYPE_PAGE))), None)
+    if file1 is None:
+        file1 = next(reversed(list(ws.find_files(page_id=page1, mimetype=MIMETYPE_ALTO))), None)
+        if file1 is None:
+            skip(f"workspace asset {ws.name} has neither PAGE nor ALTO files")
+    input_file_grp = file1.fileGrp
+    if file1.mimetype == MIMETYPE_PAGE:
+        from_to1 = 'page alto'
+        from_to2 = 'alto2.1 hocr'
+        mimetype1 = 'application/alto+xml'
+        mimetype2 = 'text/vnd.hocr+html'
+    else:
+        from_to1 = 'alto page'
+        from_to2 = 'page hocr'
+        mimetype1 = MIMETYPE_PAGE
+        mimetype2 = 'text/vnd.hocr+html'
+    run_processor(FileformatTransform,
+                  input_file_grp=input_file_grp,
+                  output_file_grp='OUT1',
+                  parameter={'from-to': from_to1},
+                  **processor_kwargs
     )
-    assert not code
+    assert os.path.isdir(os.path.join(ws.directory, 'OUT1'))
+    results = list(ws.find_files(file_grp='OUT1'))
+    assert len(results), "found no output files"
+    assert len(results) == len(pages)
+    assert results[0].mimetype == mimetype1
+    run_processor(FileformatTransform,
+                  input_file_grp='OUT1',
+                  output_file_grp='OUT2',
+                  parameter={'from-to': from_to2},
+                  **processor_kwargs,
+    )
+    ws.save_mets()
+    assert os.path.isdir(os.path.join(ws.directory, 'OUT2'))
+    results = list(ws.find_files(file_grp='OUT2'))
+    assert len(results), "found no output files"
+    assert len(results) == len(pages)
+    assert results[0].mimetype == mimetype2
 
-if __name__ == '__main__':
-    main([__file__])

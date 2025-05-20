@@ -1,16 +1,10 @@
-PROJECT_NAME := ocrd_fileformat
-TOOLS = ocrd-fileformat-transform
-DOCKER_BASE_IMAGE ?= docker.io/ocrd/core:v2.69.0
+DOCKER_BASE_IMAGE ?= docker.io/ocrd/core:latest
 DOCKER_TAG ?= ocrd/fileformat
+DOCKER ?= docker
 
+PYTHON ?= python3
 PIP ?= pip3
-
-# Directory to install to ('$(PREFIX)')
-PREFIX ?= $(if $(VIRTUAL_ENV),$(VIRTUAL_ENV),/usr/local)
-
-BINDIR = $(PREFIX)/bin
-SHAREDIR = $(PREFIX)/share/$(PROJECT_NAME)
-TESTDIR = tests
+PYTEST_ARGS ?= -vv
 
 # BEGIN-EVAL makefile-parser --make-help Makefile
 
@@ -18,57 +12,42 @@ help:
 	@echo ""
 	@echo "  Targets"
 	@echo ""
-	@echo "    deps               Install python packages"
-	@echo "    install            Install the executable in $(PREFIX)/bin and the ocrd-tool.json to $(SHAREDIR)"
-	@echo "    uninstall          Uninstall scripts and $(SHAREDIR)"
+	@echo "    deps-ubuntu        Install system dependencies"
+	@echo "    deps               Install Python dependency"
+	@echo "    install            Install Python package and scripts"
+	@echo "    uninstall          Uninstall Python package and scripts"
+	@echo "    build              Build Python package source and binary distribution"
 	@echo "    docker             Build Docker image"
-	@echo "    $(TESTDIR)/assets  Setup test assets"
-	@echo "    assets-clean       Remove $(TESTDIR)/assets"
+	@echo "    tests/assets       Setup test assets"
+	@echo "    assets-clean       Remove tests/assets"
 	@echo "    deps-test          Install dev dependencies with pip"
 	@echo "    test               Run tests with pytest"
-	@echo ""
-	@echo "  Variables"
-	@echo ""
-	@echo "    PREFIX  Directory to install to ('$(PREFIX)')"
 
-# END-EVAL
 
-# Install python packages
+deps-ubuntu:
+	apt-get update && apt-get install -y openjdk-11-jdk-headless wget git gcc unzip
+
 deps:
-	$(PIP) install 'ocrd >= 2.67.0' # needed for ocrd CLI (and bashlib)
+	$(PIP) install -r requirements.txt
 
 install-fileformat:
-	make -C repo/ocr-fileformat PREFIX=$(PREFIX) vendor install
+	make -C repo/ocr-fileformat PREFIX=$(VIRTUAL_ENV) vendor install
 
-# Install the executable in $(PREFIX)/bin and the ocrd-tool.json to $(SHAREDIR)
-install: deps install-fileformat install-tools
-
-install-tools: $(SHAREDIR)/ocrd-tool.json
-install-tools: $(TOOLS:%=$(BINDIR)/%)
-
-$(SHAREDIR)/ocrd-tool.json: ocrd-tool.json
-	mkdir -p $(SHAREDIR)
-	cp ocrd-tool.json $(SHAREDIR)
-
-$(TOOLS:%=$(BINDIR)/%): $(BINDIR)/%: %
-	mkdir -p $(BINDIR)
-	sed 's,^SHAREDIR.*,SHAREDIR="$(SHAREDIR)",' $< > $@
-	chmod a+x $@
-ifeq ($(findstring $(BINDIR),$(subst :, ,$(PATH))),)
-	@echo "you need to add '$(BINDIR)' to your PATH"
-else
-	@echo "you already have '$(BINDIR)' in your PATH. good job."
-endif
+install: install-fileformat
+	$(PIP) install .
 
 # Uninstall scripts and $(SHAREDIR)
 uninstall:
-	-$(RM) -v $(SHAREDIR)
-	-$(RM) -v $(TOOLS:%=$(BINDIR)/%)
+	-$(PIP) uninstall ocrd_fileformat
 	-$(MAKE) -C repo/ocr-fileformat PREFIX=$(PREFIX) uninstall
+
+build:
+	$(PIP) install build
+	$(PYTHON) -m build .
 
 # Build Docker image
 docker:
-	docker build \
+	$(DOCKER) build \
 	--build-arg DOCKER_BASE_IMAGE=$(DOCKER_BASE_IMAGE) \
 	--build-arg VCS_REF=$$(git rev-parse --short HEAD) \
 	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
@@ -78,29 +57,31 @@ docker:
 # Assets
 #
 
-repo/assets repo/ocr-fileformat:
-	git submodule update --init
+.PHONY: always-update
+repo/assets repo/ocr-fileformat: always-update
+	git submodule sync --recursive $@
+	if git submodule status --recursive $@ | grep -qv '^ '; then \
+		git submodule update --init --recursive $@ && \
+		touch -c $@; \
+	fi
 
-.PHONY: assets $(TESTDIR)/assets
-assets: repo/assets $(TESTDIR)/assets
+.PHONY: assets assets-clean
+assets: tests/assets
 
 # Setup test assets
-$(TESTDIR)/assets:
-	mkdir -p $(TESTDIR)/assets
-	cp -r repo/assets/data/* $(TESTDIR)/assets
+tests/assets: repo/assets
+	mkdir -p tests/assets
+	cp -r repo/assets/data/* tests/assets
 
-# Remove $(TESTDIR)/assets
 assets-clean:
-	rm -rf $(TESTDIR)/assets
+	-$(RM) -rf tests/assets
 
 # Install dev dependencies with pip
 deps-test:
 	$(PIP) install -r requirements-test.txt
 
 # Run tests with pytest
-test: install deps-test assets
-	PATH="$(PREFIX)/bin:$$PATH" pytest tests
+test:
+	$(PYTHON) -m pytest  tests --durations=0 $(PYTEST_ARGS)
 
-
-
-.PHONY: help deps install-fileformat install-tools install uninstall docker
+.PHONY: help deps deps-test install-fileformat install uninstall build docker
