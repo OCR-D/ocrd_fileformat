@@ -5,9 +5,14 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [0.12.0] - 2025-05-20
+
 Changed:
 
   * :fire: Rewrite in python for full support of OCR-D v3 API and improved performance, #64
+  * Update [ocr-fileformat](https://github.com/UB-Mannheim/ocr-fileformat/commits/master):
+    * update [page-to-alto](https://github.com/OCR-D/page-to-alto) to v2.0.1
+    * install [format-converters](https://github.com/OCR-D/format-converters) as python package
 
 ## [0.11.2] - 2024-10-16
 
@@ -214,6 +219,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
+[0.12.0]: ../../compare/v0.12.0...v0.11.2
 [0.11.2]: ../../compare/v0.11.2...v0.11.1
 [0.11.1]: ../../compare/v0.11.1...v0.11.0
 [0.11.0]: ../../compare/v0.11.0...v0.10.0
