@@ -7,8 +7,7 @@ Versioned according to [Semantic Versioning](http://semver.org/).
 
 Changed:
 
-  * Update [ocr-fileformat](https://github.com/UB-Mannheim/ocr-fileformat/commits/master):
-    * include [format-converters](https://github.com/OCR-D/format-converters) as a Python module, OCR-D/format-converters#28, UB-Mannheim/ocr-fileformat#189, #62
+  * :fire: Rewrite in python for full support of OCR-D v3 API and improved performance, #64
 
 ## [0.11.2] - 2024-10-16
 
@@ -215,7 +214,7 @@ Fixed:
   * ocrd-tool: add `steps` and `categories`
 
 <!-- link-labels -->
-[0.11.2]: ../../compare/v0.11.2...v0.11.2
+[0.11.2]: ../../compare/v0.11.2...v0.11.1
 [0.11.1]: ../../compare/v0.11.1...v0.11.0
 [0.11.0]: ../../compare/v0.11.0...v0.10.0
 [0.10.0]: ../../compare/v0.10.0...v0.9.1
